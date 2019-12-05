@@ -1,0 +1,97 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct 
+{
+    int top;
+    int size;
+    char *arra;
+}stack;
+stack* createstack()
+{
+    stack* s=malloc(sizeof(stack));
+    if(!s)
+    return NULL;
+    s->top=-1;
+    s->size=1000;
+    s->arra=(char*)malloc(s->size * sizeof(char));
+    if(!s->arra)
+    return NULL;
+    return s;
+}
+void push(stack *s,char ele)
+{
+    if(s->top==s->size)
+    return;
+    s->top++;
+    s->arra[s->top]=ele;
+
+}
+char pop(stack *s)
+{
+    if(s->top==-1)
+    return '\0';
+    char ans;
+     ans=s->arra[s->top--];
+     return ans;
+}
+char peek(stack* s)
+{
+    if(s->top==-1)
+    return '\0';
+    return s->arra[s->top];
+}
+int check(stack *s,char c[])
+{
+    int i;
+    char ch;
+    
+    for(i=0;c[i]!='\0';i++)
+    {
+        if(c[i]=='}'|| c[i]==')' || c[i]==']')
+        {
+            if(s->top==-1)
+            return 0;
+        }
+
+        
+        if(c[i]=='{'||c[i]=='[' || c[i]=='(')
+        push(s,c[i]);
+        else if(c[i]=='}' && peek(s)=='{')
+        ch=pop(s);
+        else if(c[i]==']' && peek(s)=='[')
+        ch=pop(s);
+        else if(c[i]==')' && peek(s)=='(')
+        ch=pop(s);
+        else
+        break;
+    
+
+    }
+    if(s->top==-1)
+    return 1;
+    return 0;
+}
+int main()
+{
+    stack *s;
+    s=createstack();
+    int n;
+    scanf("%d",&n);
+    int i;
+    char ch;
+    scanf("%c",&ch);
+    char c[1000];
+    /*for(i=0;i<n;i++)
+    gets(c[i]);*/
+    int val;
+    for(i=0;i<n;i++)
+    {
+        s->top=-1;
+        gets(c);
+        val=check(s,c);
+        if(val==1)
+        printf("YES\n");
+        else
+        printf("NO\n");
+    }
+}
