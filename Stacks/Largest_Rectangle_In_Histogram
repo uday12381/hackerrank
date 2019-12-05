@@ -1,0 +1,77 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the largestRectangle function below.
+    static long largestRectangle(int[] h) {
+        int farr[]=new int[h.length];
+        int barr[]=new int[h.length];
+        int n=h.length;
+        long max=-1;
+        long area=0;
+        Stack<Integer> s=new Stack<Integer>();
+        for(int i=0;i<n;i++)
+        {
+            farr[i]=1;
+            while(s.empty()==false && h[s.peek()]>=h[i])
+                farr[i]+=farr[s.pop()];
+            area=h[i]*farr[i];
+            if(area>=max)
+            max=area;
+         //   System.out.println(farr[i]);
+            s.push(i);
+
+        }
+        System.out.println(max);
+        s=new Stack<Integer>();
+        for(int i=n-1;i>=0;i--)
+        {
+            barr[i]=1;
+            while(s.empty()==false && h[s.peek()]>=h[i])
+                barr[i]+=barr[s.pop()];
+            area=h[i]*barr[i];
+            if(area>=max)
+            max=area;
+            System.out.println("Area: "+area+" barr[i]: "+barr[i]);
+            s.push(i);
+        }
+        System.out.println(max);
+        return max;
+
+
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        int[] h = new int[n];
+
+        String[] hItems = scanner.nextLine().split(" ");
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        for (int i = 0; i < n; i++) {
+            int hItem = Integer.parseInt(hItems[i]);
+            h[i] = hItem;
+        }
+
+        long result = largestRectangle(h);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
